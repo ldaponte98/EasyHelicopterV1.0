@@ -3,16 +3,16 @@
 
     <item
         android:id="@+id/navigation_helicopters"
-        android:icon="@mipmap/iconhelicopter"
+        android:icon="@drawable/helicopters_icon"
         android:title="Helicopters" />
     <item
         android:id="@+id/navigation_carga"
-        android:icon="@mipmap/iconcarga"
+        android:icon="@drawable/carga_icon"
         android:title="Carga" />
 
     <item
         android:id="@+id/navigation_ambulancia"
-        android:icon="@mipmap/iconambulancia"
+        android:icon="@drawable/ambulancia_icon"
         android:title="Ambulancia" />
 
 </menu>

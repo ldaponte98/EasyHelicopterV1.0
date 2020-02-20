@@ -19,6 +19,8 @@ import android.transition.Transition;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
+import com.example.easyhelicopter.BD.DataBase;
+
 public class SplashActivity extends AppCompatActivity {
 
     private Transition transicion;
@@ -27,6 +29,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         View decorView = getWindow().getDecorView();
+        DataBase.star();
         final Activity my_activity = this;
 
 
@@ -47,7 +50,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     transicion = new Fade(Fade.OUT);
-                    transicion.setDuration(500);
+                    transicion.setDuration(10);
                     transicion.setInterpolator(new DecelerateInterpolator());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         getWindow().setExitTransition(transicion);
