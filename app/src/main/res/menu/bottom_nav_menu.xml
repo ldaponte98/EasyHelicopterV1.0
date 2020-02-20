@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_helicopters"
+        android:icon="@mipmap/iconhelicopter"
+        android:title="Helicopters" />
+    <item
+        android:id="@+id/navigation_carga"
+        android:icon="@mipmap/iconcarga"
+        android:title="Carga" />
+
+    <item
+        android:id="@+id/navigation_ambulancia"
+        android:icon="@mipmap/iconambulancia"
+        android:title="Ambulancia" />
+
+</menu>
