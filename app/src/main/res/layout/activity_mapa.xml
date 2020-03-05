@@ -11,197 +11,226 @@
     tools:context=".MapaActivity">
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
             <fragment
                 android:id="@+id/map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="450dp"
                 tools:context=".MapaActivity" />
 
-            <ScrollView
+            <TableLayout
+                android:id="@+id/tabla"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp">
 
-                <LinearLayout
+                <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TableLayout
-                        android:id="@+id/tabla"
+                    <Button
+                        android:id="@+id/btn_ciudad_origen"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="152dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="0dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_background"
+                        android:drawableLeft="@drawable/ic_home_black_24dp"
+                        android:gravity="center"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:text="Origen"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="14sp"
+                        tools:context=".MapaActivity" />
+
+                    <Button
+                        android:id="@+id/btn_puerto_origen"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="152dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_background"
+                        android:drawableLeft="@drawable/puerto_destino_icon"
+                        android:gravity="center"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:text="Origen"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="25dp">
+
+                    <TextView
+                        android:id="@+id/label_ciudad_origen"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Ciudad de origen"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/label_puerto_origen"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Puerto de origen"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/fila_botones_destino"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="gone">
+
+                    <Button
+                        android:id="@+id/btn_ciudad_destino"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="152dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="0dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_background"
+                        android:drawableLeft="@drawable/destino_icon"
+                        android:gravity="center"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:text="Destino"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/btn_puerto_destino"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="152dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_background"
+                        android:drawableLeft="@drawable/puerto_origen_icon"
+                        android:gravity="center"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:text="Destino"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/fila_labels_destino"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="25dp"
+                    android:visibility="gone"
+                    tools:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/label_ciudad_destino"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="30dp">
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Ciudad de destino"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/label_puerto_destino"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Puerto de destino"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                            <Button
-                                android:id="@+id/btn_ciudad_origen"
-                                style="@style/Widget.AppCompat.Button"
-                                android:layout_width="152dp"
-                                android:layout_height="40dp"
-                                android:layout_gravity="center"
-                                android:layout_marginRight="0dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/button_background"
-                                android:drawableLeft="@drawable/ic_home_black_24dp"
-                                android:gravity="center"
-                                android:paddingLeft="30dp"
-                                android:paddingRight="30dp"
-                                android:text="Origen"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                                android:textColor="@android:color/background_light"
-                                android:textSize="14sp"
-                                tools:context=".MapaActivity" />
+                </TableRow>
 
-                            <Button
-                                android:id="@+id/btn_puerto_origen"
-                                style="@style/Widget.AppCompat.Button"
-                                android:layout_width="152dp"
-                                android:layout_height="40dp"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:background="@drawable/button_background"
-                                android:drawableLeft="@drawable/puerto_destino_icon"
-                                android:gravity="center"
-                                android:paddingLeft="30dp"
-                                android:paddingRight="30dp"
-                                android:text="Origen"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                                android:textColor="@android:color/background_light"
-                                android:textSize="14sp" />
+                <TableRow
+                    android:id="@+id/fila_boton_seguir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="gone">
 
-                        </TableRow>
+                    <Button
+                        android:id="@+id/btn_seguir_mapa"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="2"
+                        android:layout_weight="2"
+                        android:background="@drawable/button_background"
+                        android:gravity="center"
+                        android:text="Continuar"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="18sp" />
 
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="25dp">
 
-                            <TextView
-                                android:id="@+id/label_ciudad_origen"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Ciudad de origen"
-                                android:textColor="@android:color/background_light"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
+                </TableRow>
 
-                            <TextView
-                                android:id="@+id/label_puerto_origen"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Puerto de origen"
-                                android:textColor="@android:color/background_light"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                        </TableRow>
-
-                        <TableRow
-                            android:id="@+id/fila_botones_destino"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <Button
-                                android:id="@+id/btn_ciudad_destino"
-                                style="@style/Widget.AppCompat.Button"
-                                android:layout_width="152dp"
-                                android:layout_height="40dp"
-                                android:layout_gravity="center"
-                                android:layout_marginRight="0dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/button_background"
-                                android:drawableLeft="@drawable/destino_icon"
-                                android:gravity="center"
-                                android:paddingLeft="30dp"
-                                android:paddingRight="30dp"
-                                android:text="Destino"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                                android:textColor="@android:color/background_light"
-                                android:textSize="14sp" />
-
-                            <Button
-                                android:id="@+id/btn_puerto_destino"
-                                style="@style/Widget.AppCompat.Button"
-                                android:layout_width="152dp"
-                                android:layout_height="40dp"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:background="@drawable/button_background"
-                                android:drawableLeft="@drawable/puerto_origen_icon"
-                                android:gravity="center"
-                                android:paddingLeft="30dp"
-                                android:paddingRight="30dp"
-                                android:text="Destino"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                                android:textColor="@android:color/background_light"
-                                android:textSize="14sp" />
-
-                        </TableRow>
-
-                        <TableRow
-                            android:id="@+id/fila_labels_destino"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="25dp"
-                            android:visibility="gone"
-                            tools:visibility="gone">
-
-                            <TextView
-                                android:id="@+id/label_ciudad_destino"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Ciudad de destino"
-                                android:textColor="@android:color/background_light"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/label_puerto_destino"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Puerto de destino"
-                                android:textColor="@android:color/background_light"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                        </TableRow>
-
-                    </TableLayout>
-
-                </LinearLayout>
-            </ScrollView>
+            </TableLayout>
 
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/linear_nav"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_anchorGravity="center">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_sgt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:visibility="gone"
+            app:backgroundTint="#608fcc"
+            app:srcCompat="@drawable/siguiente_icon" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navegador_botton_nav"
@@ -210,7 +239,10 @@
             android:layout_gravity="bottom|end"
             android:background="@color/ic_launcher_background"
             app:menu="@menu/bottom_nav_menu"
-            tools:context=".MapaActivity"></com.google.android.material.bottomnavigation.BottomNavigationView>
+            tools:context=".MapaActivity">
+
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
+
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

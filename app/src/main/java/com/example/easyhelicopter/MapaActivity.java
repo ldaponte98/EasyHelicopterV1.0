@@ -1,13 +1,16 @@
 package com.example.easyhelicopter;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
@@ -16,12 +19,16 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -36,12 +43,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -51,11 +62,13 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
-    public Ciudad ciudad_origen = null;
-    public Puerto puerto_origen = null;
+    public static Ciudad ciudad_origen = null;
+    public static Puerto puerto_origen = null;
 
-    public Ciudad ciudad_destino = null;
-    public Puerto puerto_destino = null;
+    public static Ciudad ciudad_destino = null;
+    public static Puerto puerto_destino = null;
+
+    public static float distancia_viaje = 0;
 
     private TextView label_ciudad_origen;
     private TextView label_puerto_origen;
@@ -67,15 +80,23 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     private Button btn_puerto_origen;
     private Button btn_ciudad_destino;
     private Button btn_puerto_destino;
+    private Button btn_siguiente;
+    private BottomNavigationView navView;
+    private LinearLayout linear_nav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_mapa);
+
+        navView =  findViewById(R.id.navegador_botton_nav);
+        linear_nav = findViewById(R.id.linear_nav);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
 
         label_ciudad_origen = (TextView) findViewById(R.id.label_ciudad_origen);
         label_puerto_origen = (TextView) findViewById(R.id.label_puerto_origen);
@@ -86,7 +107,14 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         btn_puerto_origen = (Button) findViewById(R.id.btn_puerto_origen);
         btn_ciudad_destino = (Button) findViewById(R.id.btn_ciudad_destino);
         btn_puerto_destino = (Button) findViewById(R.id.btn_puerto_destino);
+        btn_siguiente = (Button) findViewById(R.id.btn_seguir_mapa);
 
+        btn_siguiente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                siguiente_vista_con_animacion();
+            }
+        });
 
         btn_ciudad_origen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,9 +144,23 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    public void siguiente_vista_con_animacion(){
+        Transition transicion;
+        Intent i = new Intent(getBaseContext(), PagoActivity.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            transicion = new Slide(Gravity.START);
+            transicion.setDuration(1500);
+            transicion.setInterpolator(new DecelerateInterpolator());
+            getWindow().setExitTransition(transicion);
+            startActivity(i, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
+        }else{
+            startActivity(i);
+        }
+    }
+
     public void marcar_en_mapa(double ltd, double lon, String name){
         LatLng posicion_actual = new LatLng(ltd,lon);
-        mMap.addMarker(new MarkerOptions().position(posicion_actual).title(name));
+        mMap.addMarker(new MarkerOptions().position(posicion_actual).title(name).icon(BitmapDescriptorFactory.fromResource(R.mipmap.helicoptero1)));
        // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion_actual,15));
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -253,17 +295,21 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
             }else{
                 fila_botones_destino.setVisibility(View.GONE);
                 fila_labels_destino.setVisibility(View.GONE);
+                TableRow fila_btn_siguiente = findViewById(R.id.fila_boton_seguir);
+                fila_btn_siguiente.setVisibility(View.GONE);
             }
         }
     }
 
     public void validar_pintar_ruta(){
         if (puerto_origen !=null && puerto_destino != null){
+
             mMap.clear();
-            mMap.addMarker(new MarkerOptions().position(new LatLng(puerto_origen.getLatitud(), puerto_origen.getLongitud())).title(puerto_origen.getNombre()));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(puerto_destino.getLatitud(), puerto_destino.getLongitud())).title(puerto_destino.getNombre()));
-            float zoom = 5;
+           float zoom = 6f;
             if (ciudad_destino.equals(ciudad_origen)) zoom = 11;
+
+            mMap.addMarker(new MarkerOptions().position(new LatLng(puerto_origen.getLatitud(), puerto_origen.getLongitud())).title(puerto_origen.getNombre()).icon(BitmapDescriptorFactory.fromResource(R.mipmap.helicoptero1)).anchor(0.0f,0.6f));
+            mMap.addMarker(new MarkerOptions().title(puerto_destino.getNombre()).icon(BitmapDescriptorFactory.fromResource(R.mipmap.helicoptero1)).anchor(0.0f,0.6f).position(new LatLng(puerto_destino.getLatitud(), puerto_destino.getLongitud())));
 
             Location locacion_punto_origen = new Location(puerto_origen.getNombre());
             locacion_punto_origen.setLatitude(puerto_origen.getLatitud());
@@ -273,8 +319,8 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
             locacion_punto_destino.setLatitude(puerto_destino.getLatitud());
             locacion_punto_destino.setLongitude(puerto_destino.getLongitud());
 
-            float distance = locacion_punto_origen.distanceTo(locacion_punto_destino);
-            Toast.makeText(this, "Distancia: "+(distance/1000)+"Km", Toast.LENGTH_LONG).show();
+            distancia_viaje = locacion_punto_origen.distanceTo(locacion_punto_destino) / 1000;
+            //Toast.makeText(this, "Distancia: "+(distancia_viaje/1000)+"Km", Toast.LENGTH_LONG).show();
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(puerto_origen.getLatitud(), puerto_origen.getLongitud()))
                     .zoom(zoom)
@@ -286,7 +332,12 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                     .add(new LatLng(puerto_origen.getLatitud(), puerto_origen.getLongitud()), new LatLng(puerto_destino.getLatitud(), puerto_destino.getLongitud()))
                     .width(5)
                     .color(Color.RED));
+            TableRow fila_btn_siguiente = findViewById(R.id.fila_boton_seguir);
+            fila_btn_siguiente.setVisibility(View.VISIBLE);
 
+        }else{
+            TableRow fila_btn_siguiente = findViewById(R.id.fila_boton_seguir);
+            fila_btn_siguiente.setVisibility(View.GONE);
         }
     }
     /**
@@ -350,7 +401,6 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion_actual,15));
         mMap.setMyLocationEnabled(true);
 
-
     }
 
     public Location getMyPosition(){
@@ -390,6 +440,22 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         return  location;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration myConfig) {
+
+        super.onConfigurationChanged(myConfig);
+
+    }
+
+    //evento cuando la pantalla gira
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+
+
     }
 }
 

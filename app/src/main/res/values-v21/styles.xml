@@ -4,7 +4,8 @@
     <style name="AppTransparentBarra" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="colorPrimaryDark">#000000</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimary">#608fcc</item>
         <item name="colorAccent">#000000</item>
+        <item name="android:navigationBarColor">#000000</item>
     </style>
 </resources>
